@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion"
 import { useRef, useState } from "react"
-import { ArrowRight, Mail, Phone, MapPin, Check, Loader2 } from "lucide-react"
+import { ArrowRight, Mail, Check, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -58,48 +58,15 @@ export function CTA() {
                 <div>
                   <div className="text-sm text-muted-foreground">Email us at</div>
                   <a
-                    href="mailto:hello@softbaselabs.com"
+                    href="mailto:softbaselabs@gmail.com"
                     className="text-foreground font-medium hover:text-muted-foreground transition-colors"
                   >
-                    hello@softbaselabs.com
+                    softbaselabs@gmail.com
                   </a>
                 </div>
               </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="flex items-center gap-4"
-              >
-                <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
-                  <Phone className="h-5 w-5 text-foreground" />
-                </div>
-                <div>
-                  <div className="text-sm text-muted-foreground">Call us at</div>
-                  <a
-                    href="tel:+1234567890"
-                    className="text-foreground font-medium hover:text-muted-foreground transition-colors"
-                  >
-                    +1 (234) 567-890
-                  </a>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.5 }}
-                className="flex items-center gap-4"
-              >
-                <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
-                  <MapPin className="h-5 w-5 text-foreground" />
-                </div>
-                <div>
-                  <div className="text-sm text-muted-foreground">Visit us at</div>
-                  <div className="text-foreground font-medium">San Francisco, CA</div>
-                </div>
-              </motion.div>
+              
             </div>
           </motion.div>
 

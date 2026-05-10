@@ -1,7 +1,7 @@
 "use client"
 
-import { motion, useInView, AnimatePresence } from "framer-motion"
-import { useRef, useState } from "react"
+import { motion, useInView, AnimatePresence, useScroll, useTransform } from "framer-motion"
+import { useRef, useState, useEffect } from "react"
 import { ArrowUpRight, ArrowRight, ArrowLeft, ExternalLink, Globe, Smartphone, ShoppingBag, Building2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -112,12 +112,57 @@ const projects = [
   },
 ]
 
+// Infinite scrolling marquee for project logos
+function ProjectMarquee() {
+  const marqueeItems = [
+    "Nexus Finance", "Artisan Market", "Wellness Hub", "Urban Eats", 
+    "CloudSync", "Luxe Properties", "EduLearn Pro", "GreenCart"
+  ]
+
+  return (
+    <div className="relative overflow-hidden py-8 mb-16">
+      <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-10" />
+      <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10" />
+      
+      <motion.div
+        className="flex gap-12 whitespace-nowrap"
+        animate={{ x: [0, -1920] }}
+        transition={{
+          duration: 30,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      >
+        {[...marqueeItems, ...marqueeItems, ...marqueeItems, ...marqueeItems].map((item, index) => (
+          <div
+            key={index}
+            className="flex items-center gap-3 text-2xl font-semibold text-muted-foreground/40 hover:text-muted-foreground/70 transition-colors"
+          >
+            <span className="w-2 h-2 rounded-full bg-muted-foreground/30" />
+            {item}
+          </div>
+        ))}
+      </motion.div>
+    </div>
+  )
+}
+
 export function Portfolio() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(containerRef, { once: true, margin: "-100px" })
   const [activeCategory, setActiveCategory] = useState("all")
   const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null)
   const [currentPage, setCurrentPage] = useState(0)
+
+  // Scroll-based parallax for the header
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  })
+  
+  const headerY = useTransform(scrollYProgress, [0, 1], [100, -100])
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])
 
   const filteredProjects = activeCategory === "all" 
     ? projects 
@@ -137,9 +182,12 @@ export function Portfolio() {
 
   return (
     <section id="portfolio" ref={containerRef} className="py-32 relative overflow-hidden">
+      {/* Scrolling Marquee */}
+      <ProjectMarquee />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        {/* Header */}
+        {/* Header with scroll parallax */}
         <motion.div
+          style={{ y: headerY }}
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
@@ -184,23 +232,34 @@ export function Portfolio() {
           })}
         </motion.div>
 
-        {/* Projects Grid */}
+        {/* Projects Grid with staggered animations */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeCategory + currentPage}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
             className="grid md:grid-cols-2 gap-8"
           >
             {displayedProjects.map((project, index) => (
-              <ProjectCard
+              <motion.div
                 key={project.id}
-                project={project}
-                index={index}
-                onSelect={() => setSelectedProject(project)}
-              />
+                initial={{ opacity: 0, y: 60, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ 
+                  duration: 0.6, 
+                  delay: index * 0.15,
+                  ease: [0.25, 0.46, 0.45, 0.94]
+                }}
+              >
+                <ProjectCard
+                  project={project}
+                  index={index}
+                  onSelect={() => setSelectedProject(project)}
+                />
+              </motion.div>
             ))}
           </motion.div>
         </AnimatePresence>
@@ -249,34 +308,7 @@ export function Portfolio() {
           </motion.div>
         )}
 
-        {/* Stats Banner */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-24 p-8 rounded-3xl bg-gradient-to-br from-secondary via-card to-secondary border border-border"
-        >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { value: "150+", label: "Projects Completed" },
-              { value: "$50M+", label: "Revenue Generated" },
-              { value: "98%", label: "Client Satisfaction" },
-              { value: "25+", label: "Industry Awards" },
-            ].map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
-                className="text-center"
-              >
-                <div className="text-3xl sm:text-4xl font-bold text-foreground">{stat.value}</div>
-                <div className="mt-1 text-sm text-muted-foreground">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
+        </div>
 
       {/* Project Modal */}
       <AnimatePresence>
@@ -303,10 +335,7 @@ function ProjectCard({
   const [isHovered, setIsHovered] = useState(false)
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
+    <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onSelect}
@@ -401,7 +430,7 @@ function ProjectCard({
           <ArrowUpRight className="h-5 w-5 text-muted-foreground" />
         </motion.div>
       </div>
-    </motion.div>
+    </div>
   )
 }
 
