@@ -1,8 +1,8 @@
 "use client"
 
 import { motion, useInView } from "framer-motion"
-import { useRef } from "react"
-import { ArrowRight, Mail, Phone, MapPin } from "lucide-react"
+import { useRef, useState } from "react"
+import { ArrowRight, Mail, Phone, MapPin, Check, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -10,6 +10,19 @@ import { Textarea } from "@/components/ui/textarea"
 export function CTA() {
   const containerRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(containerRef, { once: true, margin: "-100px" })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    // Simulate form submission
+    await new Promise(resolve => setTimeout(resolve, 1500))
+    setIsSubmitting(false)
+    setIsSubmitted(true)
+    // Reset after 3 seconds
+    setTimeout(() => setIsSubmitted(false), 3000)
+  }
 
   return (
     <section id="contact" ref={containerRef} className="py-32 relative bg-card">
@@ -96,7 +109,7 @@ export function CTA() {
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <form className="p-8 rounded-2xl bg-secondary border border-border space-y-6">
+            <form onSubmit={handleSubmit} className="p-8 rounded-2xl bg-secondary border border-border space-y-6">
               <div className="grid sm:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
@@ -162,10 +175,29 @@ export function CTA() {
 
               <Button
                 type="submit"
-                className="w-full bg-foreground text-background hover:bg-foreground/90 py-6 text-base group"
+                disabled={isSubmitting || isSubmitted}
+                className={`w-full py-6 text-base group transition-all duration-300 ${
+                  isSubmitted 
+                    ? "bg-green-600 text-white hover:bg-green-600" 
+                    : "bg-foreground text-background hover:bg-foreground/90"
+                }`}
               >
-                Send Message
-                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    Sending...
+                  </>
+                ) : isSubmitted ? (
+                  <>
+                    <Check className="mr-2 h-5 w-5" />
+                    Message Sent!
+                  </>
+                ) : (
+                  <>
+                    Send Message
+                    <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                  </>
+                )}
               </Button>
 
               <p className="text-xs text-muted-foreground text-center">

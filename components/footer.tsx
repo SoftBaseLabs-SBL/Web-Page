@@ -4,6 +4,17 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import { ArrowUpRight, Github, Twitter, Linkedin, Dribbble } from "lucide-react"
 
+const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  if (href.startsWith("#")) {
+    e.preventDefault()
+    const targetId = href.replace("#", "")
+    const element = document.getElementById(targetId)
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }
+}
+
 const footerLinks = {
   services: [
     { label: "Web Design", href: "#" },
@@ -77,6 +88,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
+                    onClick={(e) => scrollToSection(e, link.href)}
                     className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center group"
                   >
                     {link.label}
@@ -97,6 +109,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
+                    onClick={(e) => scrollToSection(e, link.href)}
                     className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center group"
                   >
                     {link.label}
@@ -117,6 +130,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
+                    onClick={(e) => scrollToSection(e, link.href)}
                     className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center group"
                   >
                     {link.label}

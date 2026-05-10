@@ -1,83 +1,292 @@
 "use client"
 
-import { motion, useInView, useScroll, useTransform } from "framer-motion"
+import { motion, useInView, AnimatePresence } from "framer-motion"
 import { useRef, useState } from "react"
-import { ArrowUpRight } from "lucide-react"
+import { ArrowUpRight, ArrowRight, ArrowLeft, ExternalLink, Globe, Smartphone, ShoppingBag, Building2 } from "lucide-react"
+import { Button } from "@/components/ui/button"
+
+const categories = [
+  { id: "all", label: "All Projects", icon: Globe },
+  { id: "web", label: "Web Apps", icon: Globe },
+  { id: "mobile", label: "Mobile", icon: Smartphone },
+  { id: "ecommerce", label: "E-Commerce", icon: ShoppingBag },
+  { id: "enterprise", label: "Enterprise", icon: Building2 },
+]
 
 const projects = [
   {
+    id: 1,
     title: "Nexus Finance",
-    category: "Fintech Platform",
-    description: "A revolutionary banking platform with real-time analytics and seamless transactions.",
+    category: "web",
+    categoryLabel: "Fintech Platform",
+    description: "A revolutionary banking platform with real-time analytics, seamless transactions, and AI-powered insights for modern financial management.",
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=60",
     stats: { increase: "+340%", metric: "User Engagement" },
+    technologies: ["React", "Node.js", "PostgreSQL", "AWS"],
+    year: "2025",
+    link: "#",
   },
   {
+    id: 2,
     title: "Artisan Market",
-    category: "E-Commerce",
-    description: "Handcrafted goods marketplace connecting artisans with global customers.",
+    category: "ecommerce",
+    categoryLabel: "E-Commerce",
+    description: "Handcrafted goods marketplace connecting over 5,000 artisans with global customers. Features AI recommendations and seamless checkout.",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=60",
     stats: { increase: "+180%", metric: "Conversion Rate" },
+    technologies: ["Next.js", "Stripe", "Shopify", "Tailwind"],
+    year: "2025",
+    link: "#",
   },
   {
+    id: 3,
     title: "Wellness Hub",
-    category: "Health & Wellness",
-    description: "Comprehensive wellness platform for mental health and fitness tracking.",
+    category: "mobile",
+    categoryLabel: "Health & Wellness",
+    description: "Comprehensive wellness platform for mental health tracking, meditation, and personalized fitness programs with 500K+ active users.",
     image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&auto=format&fit=crop&q=60",
     stats: { increase: "+250%", metric: "App Downloads" },
+    technologies: ["React Native", "Firebase", "TensorFlow", "Node.js"],
+    year: "2024",
+    link: "#",
   },
   {
+    id: 4,
     title: "Urban Eats",
-    category: "Food Delivery",
-    description: "Premium food delivery service with real-time tracking and personalized recommendations.",
+    category: "mobile",
+    categoryLabel: "Food Delivery",
+    description: "Premium food delivery service with real-time GPS tracking, personalized recommendations, and seamless restaurant partnerships.",
     image: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&auto=format&fit=crop&q=60",
     stats: { increase: "+420%", metric: "Order Volume" },
+    technologies: ["Flutter", "Google Maps", "Stripe", "MongoDB"],
+    year: "2024",
+    link: "#",
+  },
+  {
+    id: 5,
+    title: "CloudSync Enterprise",
+    category: "enterprise",
+    categoryLabel: "SaaS Platform",
+    description: "Enterprise-grade cloud collaboration platform with advanced security, real-time sync, and seamless integrations for Fortune 500 companies.",
+    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&auto=format&fit=crop&q=60",
+    stats: { increase: "+85%", metric: "Team Productivity" },
+    technologies: ["Vue.js", "Go", "Kubernetes", "Azure"],
+    year: "2024",
+    link: "#",
+  },
+  {
+    id: 6,
+    title: "Luxe Properties",
+    category: "web",
+    categoryLabel: "Real Estate",
+    description: "High-end real estate platform featuring virtual tours, AI-powered property matching, and streamlined booking for luxury properties.",
+    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&auto=format&fit=crop&q=60",
+    stats: { increase: "+290%", metric: "Lead Generation" },
+    technologies: ["Next.js", "Three.js", "Prisma", "Vercel"],
+    year: "2024",
+    link: "#",
+  },
+  {
+    id: 7,
+    title: "EduLearn Pro",
+    category: "web",
+    categoryLabel: "EdTech",
+    description: "Interactive e-learning platform with live classes, AI tutoring, gamification, and progress tracking for 2M+ students worldwide.",
+    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&auto=format&fit=crop&q=60",
+    stats: { increase: "+520%", metric: "Student Enrollment" },
+    technologies: ["React", "WebRTC", "Python", "AWS"],
+    year: "2023",
+    link: "#",
+  },
+  {
+    id: 8,
+    title: "GreenCart",
+    category: "ecommerce",
+    categoryLabel: "Sustainable Shopping",
+    description: "Eco-friendly e-commerce platform connecting conscious consumers with sustainable brands. Carbon-neutral shipping on all orders.",
+    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop&q=60",
+    stats: { increase: "+150%", metric: "Monthly Sales" },
+    technologies: ["Shopify", "Next.js", "GraphQL", "Contentful"],
+    year: "2023",
+    link: "#",
   },
 ]
 
 export function Portfolio() {
   const containerRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(containerRef, { once: true, margin: "-100px" })
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  })
+  const [activeCategory, setActiveCategory] = useState("all")
+  const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null)
+  const [currentPage, setCurrentPage] = useState(0)
 
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"])
+  const filteredProjects = activeCategory === "all" 
+    ? projects 
+    : projects.filter(p => p.category === activeCategory)
+
+  const projectsPerPage = 4
+  const totalPages = Math.ceil(filteredProjects.length / projectsPerPage)
+  const displayedProjects = filteredProjects.slice(
+    currentPage * projectsPerPage, 
+    (currentPage + 1) * projectsPerPage
+  )
+
+  const handleCategoryChange = (categoryId: string) => {
+    setActiveCategory(categoryId)
+    setCurrentPage(0)
+  }
 
   return (
     <section id="portfolio" ref={containerRef} className="py-32 relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16"
+          className="text-center mb-16"
         >
-          <div>
-            <span className="text-sm uppercase tracking-widest text-muted-foreground">
-              Featured Work
-            </span>
-            <h2 className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground">
-              Selected projects
-            </h2>
-          </div>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center gap-2 text-foreground hover:text-muted-foreground transition-colors group"
-          >
-            <span className="text-sm font-medium uppercase tracking-wider">View All Work</span>
-            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </motion.button>
+          <span className="text-sm uppercase tracking-widest text-muted-foreground">
+            Our Portfolio
+          </span>
+          <h2 className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground text-balance">
+            Projects that deliver results
+          </h2>
+          <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground text-balance">
+            Explore our collection of award-winning projects that have helped businesses transform their digital presence and achieve extraordinary growth.
+          </p>
         </motion.div>
 
-        <motion.div style={{ x }} className="grid md:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
-            <ProjectCard key={project.title} project={project} index={index} isInView={isInView} />
-          ))}
+        {/* Category Filter */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="flex flex-wrap justify-center gap-3 mb-12"
+        >
+          {categories.map((category) => {
+            const Icon = category.icon
+            return (
+              <motion.button
+                key={category.id}
+                onClick={() => handleCategoryChange(category.id)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
+                  activeCategory === category.id
+                    ? "bg-foreground text-background"
+                    : "bg-secondary text-muted-foreground hover:text-foreground border border-border"
+                }`}
+              >
+                <Icon className="h-4 w-4" />
+                {category.label}
+              </motion.button>
+            )
+          })}
+        </motion.div>
+
+        {/* Projects Grid */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeCategory + currentPage}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+            className="grid md:grid-cols-2 gap-8"
+          >
+            {displayedProjects.map((project, index) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                index={index}
+                onSelect={() => setSelectedProject(project)}
+              />
+            ))}
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="flex items-center justify-center gap-4 mt-12"
+          >
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setCurrentPage(p => Math.max(0, p - 1))}
+              disabled={currentPage === 0}
+              className="border-border text-foreground hover:bg-secondary disabled:opacity-50"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+            
+            <div className="flex items-center gap-2">
+              {Array.from({ length: totalPages }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentPage(i)}
+                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                    currentPage === i 
+                      ? "bg-foreground w-8" 
+                      : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                  }`}
+                />
+              ))}
+            </div>
+
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setCurrentPage(p => Math.min(totalPages - 1, p + 1))}
+              disabled={currentPage === totalPages - 1}
+              className="border-border text-foreground hover:bg-secondary disabled:opacity-50"
+            >
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </motion.div>
+        )}
+
+        {/* Stats Banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="mt-24 p-8 rounded-3xl bg-gradient-to-br from-secondary via-card to-secondary border border-border"
+        >
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { value: "150+", label: "Projects Completed" },
+              { value: "$50M+", label: "Revenue Generated" },
+              { value: "98%", label: "Client Satisfaction" },
+              { value: "25+", label: "Industry Awards" },
+            ].map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
+                className="text-center"
+              >
+                <div className="text-3xl sm:text-4xl font-bold text-foreground">{stat.value}</div>
+                <div className="mt-1 text-sm text-muted-foreground">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
       </div>
+
+      {/* Project Modal */}
+      <AnimatePresence>
+        {selectedProject && (
+          <ProjectModal 
+            project={selectedProject} 
+            onClose={() => setSelectedProject(null)} 
+          />
+        )}
+      </AnimatePresence>
     </section>
   )
 }
@@ -85,55 +294,94 @@ export function Portfolio() {
 function ProjectCard({
   project,
   index,
-  isInView,
+  onSelect,
 }: {
-  project: (typeof projects)[0]
+  project: typeof projects[0]
   index: number
-  isInView: boolean
+  onSelect: () => void
 }) {
   const [isHovered, setIsHovered] = useState(false)
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 80 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, delay: index * 0.15 }}
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={onSelect}
       className="group cursor-pointer"
     >
-      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-secondary mb-6">
+      <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-secondary mb-6">
         <motion.img
           src={project.image}
           alt={project.title}
           className="w-full h-full object-cover"
-          animate={{ scale: isHovered ? 1.05 : 1 }}
+          animate={{ scale: isHovered ? 1.08 : 1 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         />
+        
+        {/* Overlay */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: isHovered ? 1 : 0 }}
           transition={{ duration: 0.3 }}
-          className="absolute inset-0 bg-background/60 backdrop-blur-sm flex items-center justify-center"
+          className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent flex flex-col justify-end p-6"
         >
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: isHovered ? 1 : 0.8, opacity: isHovered ? 1 : 0 }}
-            transition={{ duration: 0.3 }}
-            className="flex flex-col items-center text-center px-6"
+          <motion.p
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: isHovered ? 0 : 20, opacity: isHovered ? 1 : 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+            className="text-foreground/90 text-sm leading-relaxed mb-4 line-clamp-2"
           >
-            <div className="w-16 h-16 rounded-full bg-foreground flex items-center justify-center mb-4">
-              <ArrowUpRight className="h-6 w-6 text-background" />
-            </div>
-            <p className="text-foreground text-lg">{project.description}</p>
+            {project.description}
+          </motion.p>
+          
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: isHovered ? 0 : 20, opacity: isHovered ? 1 : 0 }}
+            transition={{ duration: 0.3, delay: 0.15 }}
+            className="flex flex-wrap gap-2"
+          >
+            {project.technologies.slice(0, 3).map((tech) => (
+              <span
+                key={tech}
+                className="text-xs px-2.5 py-1 rounded-full bg-foreground/10 text-foreground/80 backdrop-blur-sm"
+              >
+                {tech}
+              </span>
+            ))}
+            {project.technologies.length > 3 && (
+              <span className="text-xs px-2.5 py-1 rounded-full bg-foreground/10 text-foreground/80 backdrop-blur-sm">
+                +{project.technologies.length - 3}
+              </span>
+            )}
           </motion.div>
         </motion.div>
 
-        {/* Stats badge */}
+        {/* View Project Button */}
+        <motion.div
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: isHovered ? 1 : 0, opacity: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.3 }}
+          className="absolute top-4 right-4"
+        >
+          <div className="w-12 h-12 rounded-full bg-foreground flex items-center justify-center">
+            <ArrowUpRight className="h-5 w-5 text-background" />
+          </div>
+        </motion.div>
+
+        {/* Year Badge */}
+        <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-background/80 backdrop-blur-sm text-xs font-medium text-foreground">
+          {project.year}
+        </div>
+
+        {/* Stats Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20 }}
-          className="absolute bottom-4 left-4 px-4 py-2 rounded-full bg-foreground text-background text-sm font-medium"
+          transition={{ duration: 0.3, delay: 0.2 }}
+          className="absolute bottom-4 right-4 px-4 py-2 rounded-full bg-foreground text-background text-sm font-semibold"
         >
           {project.stats.increase} {project.stats.metric}
         </motion.div>
@@ -141,7 +389,7 @@ function ProjectCard({
 
       <div className="flex items-start justify-between">
         <div>
-          <span className="text-sm text-muted-foreground">{project.category}</span>
+          <span className="text-sm text-muted-foreground">{project.categoryLabel}</span>
           <h3 className="text-2xl font-semibold text-foreground mt-1 group-hover:text-muted-foreground transition-colors">
             {project.title}
           </h3>
@@ -153,6 +401,113 @@ function ProjectCard({
           <ArrowUpRight className="h-5 w-5 text-muted-foreground" />
         </motion.div>
       </div>
+    </motion.div>
+  )
+}
+
+function ProjectModal({
+  project,
+  onClose,
+}: {
+  project: typeof projects[0]
+  onClose: () => void
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-xl"
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0, y: 50 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.9, opacity: 0, y: 50 }}
+        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-card rounded-3xl border border-border shadow-2xl"
+      >
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-6 right-6 z-10 w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-foreground hover:bg-muted transition-colors"
+        >
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        {/* Project Image */}
+        <div className="relative aspect-video overflow-hidden rounded-t-3xl">
+          <img
+            src={project.image}
+            alt={project.title}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
+        </div>
+
+        {/* Content */}
+        <div className="p-8 lg:p-12">
+          <div className="flex flex-wrap items-center gap-3 mb-4">
+            <span className="text-sm text-muted-foreground">{project.categoryLabel}</span>
+            <span className="text-muted-foreground">•</span>
+            <span className="text-sm text-muted-foreground">{project.year}</span>
+          </div>
+
+          <h3 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
+            {project.title}
+          </h3>
+
+          <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+            {project.description}
+          </p>
+
+          {/* Stats */}
+          <div className="p-6 rounded-2xl bg-secondary mb-8">
+            <div className="text-center">
+              <div className="text-4xl font-bold text-foreground">{project.stats.increase}</div>
+              <div className="text-muted-foreground mt-1">{project.stats.metric}</div>
+            </div>
+          </div>
+
+          {/* Technologies */}
+          <div className="mb-8">
+            <h4 className="text-sm font-medium text-foreground mb-4 uppercase tracking-wider">
+              Technologies Used
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {project.technologies.map((tech) => (
+                <span
+                  key={tech}
+                  className="px-4 py-2 rounded-full bg-secondary text-foreground text-sm border border-border"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Button
+              className="flex-1 bg-foreground text-background hover:bg-foreground/90 py-6 text-base group"
+            >
+              <ExternalLink className="mr-2 h-5 w-5" />
+              View Live Project
+              <ArrowUpRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Button>
+            <Button
+              variant="outline"
+              onClick={onClose}
+              className="flex-1 border-border text-foreground hover:bg-secondary py-6 text-base"
+            >
+              Close
+            </Button>
+          </div>
+        </div>
+      </motion.div>
     </motion.div>
   )
 }

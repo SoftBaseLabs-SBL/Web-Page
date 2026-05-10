@@ -5,6 +5,13 @@ import { ArrowRight, ArrowDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useRef } from "react"
 
+const scrollToSection = (id: string) => {
+  const element = document.getElementById(id)
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth", block: "start" })
+  }
+}
+
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
@@ -111,6 +118,7 @@ export function Hero() {
         >
           <Button
             size="lg"
+            onClick={() => scrollToSection("portfolio")}
             className="bg-foreground text-background hover:bg-foreground/90 px-8 py-6 text-base group"
           >
             View Our Work
@@ -119,6 +127,7 @@ export function Hero() {
           <Button
             size="lg"
             variant="outline"
+            onClick={() => scrollToSection("contact")}
             className="border-border text-foreground hover:bg-secondary px-8 py-6 text-base"
           >
             Book a Call

@@ -14,6 +14,22 @@ const navItems = [
   { label: "Contact", href: "#contact" },
 ]
 
+const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  e.preventDefault()
+  const targetId = href.replace("#", "")
+  const element = document.getElementById(targetId)
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth", block: "start" })
+  }
+}
+
+const scrollToContact = () => {
+  const element = document.getElementById("contact")
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth", block: "start" })
+  }
+}
+
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -59,6 +75,7 @@ export function Header() {
                 >
                   <Link
                     href={item.href}
+                    onClick={(e) => scrollToSection(e, item.href)}
                     className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300 relative group"
                   >
                     {item.label}
@@ -76,6 +93,7 @@ export function Header() {
               >
                 <Button
                   variant="outline"
+                  onClick={scrollToContact}
                   className="border-border text-foreground hover:bg-secondary group"
                 >
                   Start a Project
@@ -114,7 +132,10 @@ export function Header() {
                 >
                   <Link
                     href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={(e) => {
+                      scrollToSection(e, item.href)
+                      setIsMobileMenuOpen(false)
+                    }}
                     className="text-3xl font-medium text-foreground hover:text-muted-foreground transition-colors"
                   >
                     {item.label}
@@ -127,7 +148,13 @@ export function Header() {
                 transition={{ delay: navItems.length * 0.1 }}
                 className="mt-8"
               >
-                <Button className="w-full bg-foreground text-background hover:bg-foreground/90">
+                <Button 
+                  onClick={() => {
+                    scrollToContact()
+                    setIsMobileMenuOpen(false)
+                  }}
+                  className="w-full bg-foreground text-background hover:bg-foreground/90"
+                >
                   Start a Project
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
