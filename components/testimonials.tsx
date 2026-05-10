@@ -8,34 +8,34 @@ import { Button } from "@/components/ui/button"
 const testimonials = [
   {
     quote:
-      "SoftBaseLabs transformed our online presence completely. The new website increased our conversion rate by 340% in just three months. Their attention to detail and understanding of our brand was exceptional.",
-    author: "Sarah Chen",
-    role: "CEO, Nexus Finance",
-    avatar: "SC",
+      "SoftBaseLabs helped us create a website that truly represents our bakery. Our online orders have tripled since launch, and customers always compliment how easy it is to use. They made the whole process stress-free!",
+    author: "Maria Santos",
+    role: "Owner, Sweet Dreams Bakery",
+    avatar: "MS",
     rating: 5,
   },
   {
     quote:
-      "Working with SoftBaseLabs was a game-changer for our e-commerce business. They didn't just build a website; they created an experience that our customers love. Sales have never been better.",
-    author: "Marcus Williams",
-    role: "Founder, Artisan Market",
-    avatar: "MW",
+      "As a small gym owner, I was nervous about investing in a new website. SoftBaseLabs listened to exactly what I needed and delivered something beautiful. New members tell me they signed up because of how professional we look online.",
+    author: "Jake Thompson",
+    role: "Owner, Iron & Grit Fitness",
+    avatar: "JT",
     rating: 5,
   },
   {
     quote:
-      "The team at SoftBaseLabs exceeded every expectation. Their strategic approach to design and development resulted in a platform that truly resonates with our users. Highly recommended!",
-    author: "Elena Rodriguez",
-    role: "Product Lead, Wellness Hub",
-    avatar: "ER",
+      "They took our outdated website and turned it into something we're actually proud to show off. The booking system they built has saved us hours every week. Couldn't recommend them enough!",
+    author: "Linda & Tom Garcia",
+    role: "Owners, Garcia Family Dental",
+    avatar: "LG",
     rating: 5,
   },
   {
     quote:
-      "From concept to launch, SoftBaseLabs delivered excellence at every stage. Our new platform has received incredible feedback, and the ROI speaks for itself. True professionals.",
-    author: "David Park",
-    role: "CTO, Urban Eats",
-    avatar: "DP",
+      "Running a flower shop, I needed a site that was as beautiful as my arrangements. SoftBaseLabs nailed it. My customers love being able to order online, and I love how easy it is to update.",
+    author: "Rachel Kim",
+    role: "Owner, Petal & Bloom Florals",
+    avatar: "RK",
     rating: 5,
   },
 ]
@@ -66,7 +66,7 @@ export function Testimonials() {
             Testimonials
           </span>
           <h2 className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground text-balance">
-            Loved by industry leaders
+            Loved by local businesses
           </h2>
         </motion.div>
 
@@ -164,10 +164,10 @@ export function Testimonials() {
           className="mt-24"
         >
           <p className="text-center text-sm text-muted-foreground mb-8">
-            Trusted by innovative companies worldwide
+            Trusted by local businesses in our community
           </p>
           <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6">
-            {["Nexus", "Artisan", "Wellness", "Urban", "TechFlow", "CloudBase"].map(
+            {["Sweet Dreams", "Iron & Grit", "Garcia Dental", "Petal & Bloom", "Main St. Cafe", "Harbor Books"].map(
               (company, index) => (
                 <motion.div
                   key={company}

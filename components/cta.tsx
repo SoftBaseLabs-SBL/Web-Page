@@ -113,22 +113,6 @@ export function CTA() {
               </div>
 
               <div>
-                <label htmlFor="budget" className="block text-sm font-medium text-foreground mb-2">
-                  Budget Range
-                </label>
-                <select
-                  id="budget"
-                  className="w-full h-10 px-3 rounded-md bg-card border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                >
-                  <option value="">Select your budget</option>
-                  <option value="10k-25k">$10,000 - $25,000</option>
-                  <option value="25k-50k">$25,000 - $50,000</option>
-                  <option value="50k-100k">$50,000 - $100,000</option>
-                  <option value="100k+">$100,000+</option>
-                </select>
-              </div>
-
-              <div>
                 <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
                   Tell us about your project
                 </label>
