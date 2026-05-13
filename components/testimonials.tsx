@@ -8,26 +8,23 @@ import { Button } from "@/components/ui/button"
 const testimonials = [
   {
     quote:
-      "SoftBaseLabs helped us create a website that truly represents our bakery. Our online orders have tripled since launch, and customers always compliment how easy it is to use. They made the whole process stress-free!",
-    author: "Maria Santos",
-    role: "Owner, Sweet Dreams Bakery",
-    avatar: "MS",
+      "They listened to what we actually needed and delivered on time. Our new site is getting us good leads.!",
+    role: "Owner, Elite Landscape",
+    avatar: "EL",
     rating: 5,
   },
   {
     quote:
-      "As a small gym owner, I was nervous about investing in a new website. SoftBaseLabs listened to exactly what I needed and delivered something beautiful. New members tell me they signed up because of how professional we look online.",
-    author: "Jake Thompson",
-    role: "Owner, Iron & Grit Fitness",
-    avatar: "JT",
+      "As a small buisness owner, I was nervous about investing in a new website. SoftBaseLabs listened to exactly what I needed and delivered something beautiful. New members tell me they signed up because of how professional we look online.",
+    role: "Owner, Smith Landscaping",
+    avatar: "SL",
     rating: 5,
   },
   {
     quote:
       "They took our outdated website and turned it into something we're actually proud to show off. The booking system they built has saved us hours every week. Couldn't recommend them enough!",
-    author: "Linda & Tom Garcia",
-    role: "Owners, Garcia Family Dental",
-    avatar: "LG",
+    role: "Slick Fades Barbershop",
+    avatar: "SF",
     rating: 5,
   },
   {
