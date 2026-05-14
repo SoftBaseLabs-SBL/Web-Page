@@ -164,7 +164,7 @@ export function Testimonials() {
             Trusted by local businesses in our community
           </p>
           <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6">
-            {["Sweet Dreams", "Iron & Grit", "Garcia Dental", "Petal & Bloom", "Main St. Cafe", "Harbor Books"].map(
+            {["Liskeys", "Elite Landscaping", "Smith Landscaping", "Petal & Bloom", "Omisushimi", "lincolnstreetsoap"].map(
               (company, index) => (
                 <motion.div
                   key={company}
@@ -183,3 +183,4 @@ export function Testimonials() {
     </section>
   )
 }
+

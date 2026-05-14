@@ -21,7 +21,6 @@ const projects = [
     categoryLabel: "Lawncare",
     description: "transforms outdoor spaces into stunning, functional landscapes that enhance property value and elevate everyday living. Online bookings and automated follow ups with Google Review forms.",
     image: "https://i.postimg.cc/nzGt3JZx/Screenshot-2026-05-13-at-8-48-49-PM.png",
-    stats: { increase: "+340%", metric: "User Engagement" },
     technologies: ["React", "Node.js", "PostgreSQL", "HTML"],
     year: "2025",
     link: "elitelandscapesllc.com",
@@ -33,8 +32,7 @@ const projects = [
     categoryLabel: "E-Commerce",
     description: "Handcrafted goods marketplace connecting over 5,000 artisans with global customers. Features AI recommendations and seamless checkout.",
     image: "https://i.postimg.cc/CKPmsrnq/monty-auto-cropped.png",
-    stats: { increase: "+180%", metric: "Conversion Rate" },
-    technologies: ["Next.js", "Stripe", "Shopify", "Tailwind"],
+    technologies: ["Next.js", "Stripe", "Tailwind"],
     year: "2025",
     link: "#",
   },
@@ -45,9 +43,9 @@ const projects = [
     categoryLabel: "Health & Wellness",
     description: "Comprehensive wellness platform for mental health tracking, meditation, and personalized fitness programs with 500K+ active users.",
     image: "https://i.postimg.cc/3wngHyKQ/trull-contracting-cropped.png",
-    stats: { increase: "+250%", metric: "App Downloads" },
+
     technologies: ["React Native", "Firebase", "TensorFlow", "Node.js"],
-    year: "2024",
+    year: "2026",
     link: "#",
   },
   {
@@ -57,9 +55,9 @@ const projects = [
     categoryLabel: "Food Delivery",
     description: "Premium food delivery service with real-time GPS tracking, personalized recommendations, and seamless restaurant partnerships.",
     image: "https://i.postimg.cc/0yVndXLq/Screenshot-2026-05-13-at-9-08-34-PM.png",
-    stats: { increase: "+420%", metric: "Order Volume" },
+
     technologies: ["Flutter", "Google Maps", "Stripe", "MongoDB"],
-    year: "2024",
+    year: "2026",
     link: "#",
   },
   {
@@ -69,8 +67,6 @@ const projects = [
     categoryLabel: "SaaS Platform",
     description: "Enterprise-grade cloud collaboration platform with advanced security, real-time sync, and seamless integrations for Fortune 500 companies.",
     image: "https://i.postimg.cc/rspFWmW6/Screenshot-2026-05-13-at-9-13-50-PM.png",
-    stats: { increase: "+85%", metric: "Team Productivity" },
-    technologies: ["Vue.js", "Go", "Kubernetes", "Azure"],
     year: "2024",
     link: "#",
   },
@@ -81,8 +77,6 @@ const projects = [
     categoryLabel: "Real Estate",
     description: "High-end real estate platform featuring virtual tours, AI-powered property matching, and streamlined booking for luxury properties.",
     image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&auto=format&fit=crop&q=60",
-    stats: { increase: "+290%", metric: "Lead Generation" },
-    technologies: ["Next.js", "Three.js", "Prisma", "Vercel"],
     year: "2024",
     link: "#",
   },
@@ -93,9 +87,7 @@ const projects = [
     categoryLabel: "EdTech",
     description: "Interactive e-learning platform with live classes, AI tutoring, gamification, and progress tracking for 2M+ students worldwide.",
     image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&auto=format&fit=crop&q=60",
-    stats: { increase: "+520%", metric: "Student Enrollment" },
-    technologies: ["React", "WebRTC", "Python", "AWS"],
-    year: "2023",
+    year: "2025",
     link: "#",
   },
   {
@@ -105,7 +97,6 @@ const projects = [
     categoryLabel: "Sustainable Shopping",
     description: "Eco-friendly e-commerce platform connecting conscious consumers with sustainable brands. Carbon-neutral shipping on all orders.",
     image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop&q=60",
-    stats: { increase: "+150%", metric: "Monthly Sales" },
     technologies: ["Shopify", "Next.js", "GraphQL", "Contentful"],
     year: "2023",
     link: "#",
@@ -115,15 +106,15 @@ const projects = [
 // Infinite scrolling marquee for project logos
 function ProjectMarquee() {
   const marqueeItems = [
-    "Nexus Finance", "Artisan Market", "Wellness Hub", "Urban Eats", 
-    "CloudSync", "Luxe Properties", "EduLearn Pro", "GreenCart"
+    "Landscaping", "Mobile Mechanics", "Barbershops", "Contractors",
+    "Plumbing", "Online Shops", "Roofing", "Property Management"
   ]
 
   return (
     <div className="relative overflow-hidden py-8 mb-16">
       <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-10" />
       <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10" />
-      
+
       <motion.div
         className="flex gap-12 whitespace-nowrap"
         animate={{ x: [0, -1920] }}
@@ -160,18 +151,18 @@ export function Portfolio() {
     target: containerRef,
     offset: ["start end", "end start"]
   })
-  
+
   const headerY = useTransform(scrollYProgress, [0, 1], [100, -100])
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])
 
-  const filteredProjects = activeCategory === "all" 
-    ? projects 
+  const filteredProjects = activeCategory === "all"
+    ? projects
     : projects.filter(p => p.category === activeCategory)
 
   const projectsPerPage = 4
   const totalPages = Math.ceil(filteredProjects.length / projectsPerPage)
   const displayedProjects = filteredProjects.slice(
-    currentPage * projectsPerPage, 
+    currentPage * projectsPerPage,
     (currentPage + 1) * projectsPerPage
   )
 
@@ -219,11 +210,10 @@ export function Portfolio() {
                 onClick={() => handleCategoryChange(category.id)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
-                  activeCategory === category.id
-                    ? "bg-foreground text-background"
-                    : "bg-secondary text-muted-foreground hover:text-foreground border border-border"
-                }`}
+                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${activeCategory === category.id
+                  ? "bg-foreground text-background"
+                  : "bg-secondary text-muted-foreground hover:text-foreground border border-border"
+                  }`}
               >
                 <Icon className="h-4 w-4" />
                 {category.label}
@@ -248,8 +238,8 @@ export function Portfolio() {
                 initial={{ opacity: 0, y: 60, scale: 0.95 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ 
-                  duration: 0.6, 
+                transition={{
+                  duration: 0.6,
                   delay: index * 0.15,
                   ease: [0.25, 0.46, 0.45, 0.94]
                 }}
@@ -281,17 +271,16 @@ export function Portfolio() {
             >
               <ArrowLeft className="h-4 w-4" />
             </Button>
-            
+
             <div className="flex items-center gap-2">
               {Array.from({ length: totalPages }).map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setCurrentPage(i)}
-                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                    currentPage === i 
-                      ? "bg-foreground w-8" 
-                      : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
-                  }`}
+                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${currentPage === i
+                    ? "bg-foreground w-8"
+                    : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                    }`}
                 />
               ))}
             </div>
@@ -308,14 +297,14 @@ export function Portfolio() {
           </motion.div>
         )}
 
-        </div>
+      </div>
 
       {/* Project Modal */}
       <AnimatePresence>
         {selectedProject && (
-          <ProjectModal 
-            project={selectedProject} 
-            onClose={() => setSelectedProject(null)} 
+          <ProjectModal
+            project={selectedProject}
+            onClose={() => setSelectedProject(null)}
           />
         )}
       </AnimatePresence>
@@ -349,7 +338,7 @@ function ProjectCard({
           animate={{ scale: isHovered ? 1.08 : 1 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         />
-        
+
         {/* Overlay */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -365,7 +354,7 @@ function ProjectCard({
           >
             {project.description}
           </motion.p>
-          
+
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: isHovered ? 0 : 20, opacity: isHovered ? 1 : 0 }}
