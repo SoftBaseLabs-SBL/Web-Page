@@ -142,10 +142,9 @@ export function Hero() {
           className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16"
         >
           {[
-            { value: "150+", label: "Projects Delivered" },
+            { value: "20+", label: "Projects Delivered" },
             { value: "98%", label: "Client Satisfaction" },
-            { value: "4.5x", label: "Average ROI Increase" },
-            { value: "12+", label: "Years Experience" },
+            { value: "3+", label: "Years Experience" },
           ].map((stat, index) => (
             <motion.div
               key={stat.label}
