@@ -16,15 +16,15 @@ const categories = [
 const projects = [
   {
     id: 1,
-    title: "Nexus Finance",
+    title: "Elite Landscaping",
     category: "web",
-    categoryLabel: "Fintech Platform",
-    description: "A revolutionary banking platform with real-time analytics, seamless transactions, and AI-powered insights for modern financial management.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=60",
+    categoryLabel: "Landscaping",
+    description: "transforms outdoor spaces into stunning, functional landscapes that enhance property value and elevate everyday living. Online bookings and automated follow ups with Google Review forms.",
+    image: "https://elitelandscapesllc.com/_next/image?url=https%3A%2F%2Fik.imagekit.io%2F4wu305uo4%2Ftr%3Aw-1000%2Cf-auto%2Clo-true%2Cq-80%2Fimage_690ba3005c7cd75eb82584f5.jpeg&w=1080&q=75",
     stats: { increase: "+340%", metric: "User Engagement" },
-    technologies: ["React", "Node.js", "PostgreSQL", "AWS"],
+    technologies: ["React", "Node.js", "PostgreSQL", "HTML"],
     year: "2025",
-    link: "#",
+    link: "elitelandscapesllc.com",
   },
   {
     id: 2,
