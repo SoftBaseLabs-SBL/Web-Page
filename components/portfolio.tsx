@@ -361,7 +361,7 @@ function ProjectCard({
             transition={{ duration: 0.3, delay: 0.15 }}
             className="flex flex-wrap gap-2"
           >
-            {project.technologies.slice(0, 3).map((tech) => (
+            {(project.technologies ?? []).slice(0, 3).map((tech) => (
               <span
                 key={tech}
                 className="text-xs px-2.5 py-1 rounded-full bg-foreground/10 text-foreground/80 backdrop-blur-sm"
@@ -369,9 +369,9 @@ function ProjectCard({
                 {tech}
               </span>
             ))}
-            {project.technologies.length > 3 && (
+            {(project.technologies?.length ?? 0) > 3 && (
               <span className="text-xs px-2.5 py-1 rounded-full bg-foreground/10 text-foreground/80 backdrop-blur-sm">
-                +{project.technologies.length - 3}
+                +{(project.technologies?.length ?? 0) - 3}
               </span>
             )}
           </motion.div>
@@ -394,15 +394,6 @@ function ProjectCard({
           {project.year}
         </div>
 
-        {/* Stats Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20 }}
-          transition={{ duration: 0.3, delay: 0.2 }}
-          className="absolute bottom-4 right-4 px-4 py-2 rounded-full bg-foreground text-background text-sm font-semibold"
-        >
-          {project.stats.increase} {project.stats.metric}
-        </motion.div>
       </div>
 
       <div className="flex items-start justify-between">
@@ -482,21 +473,13 @@ function ProjectModal({
             {project.description}
           </p>
 
-          {/* Stats */}
-          <div className="p-6 rounded-2xl bg-secondary mb-8">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-foreground">{project.stats.increase}</div>
-              <div className="text-muted-foreground mt-1">{project.stats.metric}</div>
-            </div>
-          </div>
-
           {/* Technologies */}
           <div className="mb-8">
             <h4 className="text-sm font-medium text-foreground mb-4 uppercase tracking-wider">
               Technologies Used
             </h4>
             <div className="flex flex-wrap gap-2">
-              {project.technologies.map((tech) => (
+              {(project.technologies ?? []).map((tech) => (
                 <span
                   key={tech}
                   className="px-4 py-2 rounded-full bg-secondary text-foreground text-sm border border-border"
