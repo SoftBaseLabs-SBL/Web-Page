@@ -40,8 +40,8 @@ const projects = [
     id: 3,
     title: "Trull Contracting",
     category: "Heavy Work",
-    categoryLabel: "Contracting/Excevation",
-    description: "Delivers heavy civil and infrastructure work with precision — excavation, paving, utilities, and around-the-clock commitment to every project..",
+    categoryLabel: "Contracting/Excavation",
+    description: "Delivers heavy civil and infrastructure work with precision — excavation, paving, utilities, and around-the-clock commitment to every project.",
     image: "https://i.postimg.cc/3wngHyKQ/trull-contracting-cropped.png",
 
     technologies: ["React Native", "Firebase", "TensorFlow", "Node.js"],
@@ -53,7 +53,7 @@ const projects = [
     title: "Catos Cut Masters",
     category: "Barbershop",
     categoryLabel: "Personal Care Services",
-    description: "Precision cuts. Sharp edges. Dayton's premier destination for the modern gentleman..",
+    description: "Precision cuts. Sharp edges. Dayton's premier destination for the modern gentleman.",
     image: "https://i.postimg.cc/0yVndXLq/Screenshot-2026-05-13-at-9-08-34-PM.png",
 
     technologies: ["Flutter", "Google Maps", "Stripe", "MongoDB"],
