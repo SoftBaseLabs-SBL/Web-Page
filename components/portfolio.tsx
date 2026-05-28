@@ -4,6 +4,7 @@ import { motion, useInView, AnimatePresence, useScroll, useTransform } from "fra
 import { useRef, useState, useEffect } from "react"
 import { ArrowUpRight, ArrowRight, ArrowLeft, ExternalLink, Globe, Smartphone, ShoppingBag, Building2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 
 const categories = [
   { id: "all", label: "All Projects", icon: Globe },
@@ -115,16 +116,8 @@ function ProjectMarquee() {
       <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-10" />
       <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10" />
 
-      <motion.div
-        className="flex gap-12 whitespace-nowrap"
-        animate={{ x: [0, -1920] }}
-        transition={{
-          duration: 30,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-      >
-        {[...marqueeItems, ...marqueeItems, ...marqueeItems, ...marqueeItems].map((item, index) => (
+      <div className="flex gap-12 whitespace-nowrap animate-marquee">
+        {[...marqueeItems, ...marqueeItems].map((item, index) => (
           <div
             key={index}
             className="flex items-center gap-3 text-2xl font-semibold text-muted-foreground/40 hover:text-muted-foreground/70 transition-colors"
@@ -133,7 +126,7 @@ function ProjectMarquee() {
             {item}
           </div>
         ))}
-      </motion.div>
+      </div>
     </div>
   )
 }
@@ -331,13 +324,20 @@ function ProjectCard({
       className="group cursor-pointer"
     >
       <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-secondary mb-6">
-        <motion.img
-          src={project.image}
-          alt={project.title}
-          className="w-full h-full object-cover"
+        <motion.div
+          className="relative w-full h-full"
           animate={{ scale: isHovered ? 1.08 : 1 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-        />
+        >
+          <Image
+            src={project.image}
+            alt={project.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            loading="lazy"
+          />
+        </motion.div>
 
         {/* Overlay */}
         <motion.div
@@ -449,10 +449,13 @@ function ProjectModal({
 
         {/* Project Image */}
         <div className="relative aspect-video overflow-hidden rounded-t-3xl">
-          <img
+          <Image
             src={project.image}
             alt={project.title}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            sizes="(max-width: 1024px) 100vw, 896px"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
         </div>
