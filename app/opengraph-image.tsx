@@ -70,12 +70,24 @@ export default function OGImage() {
         />
 
         {/* SB Logo mark */}
-        <img
-          src="https://softbaselabs.com/icon.svg"
-          width={88}
-          height={88}
-          style={{ marginBottom: '24px', borderRadius: '18px' }}
-        />
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'white',
+            borderRadius: '24px',
+            padding: '14px 20px',
+            marginBottom: '28px',
+          }}
+        >
+          <img
+            src="https://softbaselabs.com/logo.png"
+            width={120}
+            height={68}
+            style={{ objectFit: 'contain' }}
+          />
+        </div>
 
         {/* Brand name */}
         <div
