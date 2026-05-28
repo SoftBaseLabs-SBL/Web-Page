@@ -20,6 +20,7 @@ export function Hero() {
   })
 
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"])
+  const y2 = useTransform(scrollYProgress, [0, 1], ["0%", "30%"])
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
   const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.9])
 
@@ -31,30 +32,21 @@ export function Hero() {
       {/* Animated background elements */}
       <div className="absolute inset-0">
         <motion.div
-          style={{ y, opacity }}
-          className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl opacity-20"
-          animate={{
-            background: [
-              "radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%)",
-              "radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%)",
-              "radial-gradient(circle, rgba(236, 72, 153, 0.3) 0%, transparent 70%)",
-              "radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%)",
-            ],
+          style={{
+            y,
+            opacity,
+            willChange: 'transform',
+            background: "radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%)",
           }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+          className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl opacity-20"
         />
         <motion.div
-          style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "30%"]) }}
-          className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-3xl opacity-20"
-          animate={{
-            background: [
-              "radial-gradient(circle, rgba(236, 72, 153, 0.3) 0%, transparent 70%)",
-              "radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%)",
-              "radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%)",
-              "radial-gradient(circle, rgba(236, 72, 153, 0.3) 0%, transparent 70%)",
-            ],
+          style={{
+            y: y2,
+            willChange: 'transform',
+            background: "radial-gradient(circle, rgba(236, 72, 153, 0.3) 0%, transparent 70%)",
           }}
-          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+          className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-3xl opacity-20"
         />
       </div>
 
@@ -67,7 +59,7 @@ export function Hero() {
         }}
       />
 
-      <motion.div style={{ scale, opacity }} className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 text-center">
+      <motion.div style={{ scale, opacity, willChange: 'transform' }} className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
