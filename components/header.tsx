@@ -11,11 +11,13 @@ const navItems = [
   { label: "Work", href: "#portfolio" },
   { label: "Process", href: "#process" },
   { label: "Pricing", href: "#pricing" },
+  { label: "Blog", href: "/blog" },
   { label: "FAQ", href: "#faq" },
   { label: "Contact", href: "#contact" },
 ]
 
 const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  if (!href.startsWith("#")) return // let Link navigate to real routes (e.g. /blog)
   e.preventDefault()
   const targetId = href.replace("#", "")
   const element = document.getElementById(targetId)

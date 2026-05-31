@@ -13,7 +13,7 @@ const Footer       = dynamic(() => import("@/components/footer").then(m => ({ de
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <main className="min-h-screen bg-background text-foreground overflow-x-clip">
       <Header />
       <Hero />
       <Services />
