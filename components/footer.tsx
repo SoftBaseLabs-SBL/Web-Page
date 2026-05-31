@@ -21,6 +21,7 @@ const footerLinks = {
     { label: "Work", href: "#portfolio" },
     { label: "Process", href: "#process" },
     { label: "Pricing", href: "#pricing" },
+    { label: "Blog", href: "/blog" },
   ],
   company: [
     { label: "Testimonials", href: "#testimonials" },
@@ -29,7 +30,7 @@ const footerLinks = {
   ],
   getInTouch: [
     { label: "Start a Project", href: "#contact" },
-    { label: "Book a Call", href: "#contact" },
+    { label: "Book a Call", href: "/book" },
     { label: "softbaselabs@gmail.com", href: "mailto:softbaselabs@gmail.com" },
   ],
 }

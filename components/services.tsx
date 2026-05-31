@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion"
 import { useRef, useState } from "react"
-import { Palette, Code2, Rocket, BarChart3, Layers, Zap } from "lucide-react"
+import { Palette, Code2, Box, BarChart3, Layers, Zap } from "lucide-react"
 
 const services = [
   {
@@ -20,11 +20,11 @@ const services = [
     features: ["React/Next.js", "Custom CMS", "API Integration"],
   },
   {
-    icon: Rocket,
-    title: "E-Commerce",
+    icon: Box,
+    title: "3D Models & Animated Scrolling",
     description:
-      "Conversion-optimized online stores that turn browsers into buyers with seamless shopping experiences.",
-    features: ["Shopify/Custom", "Payment Systems", "Inventory Management"],
+      "Immersive, interactive experiences with custom 3D models and scroll-driven animations that captivate visitors and make your brand unforgettable.",
+    features: ["3D Models", "Scroll Animations", "Interactive WebGL"],
   },
   {
     icon: BarChart3,

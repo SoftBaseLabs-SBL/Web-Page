@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion"
 import { ArrowRight, ArrowDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 import { useRef } from "react"
 
 const scrollToSection = (id: string) => {
@@ -117,12 +118,12 @@ export function Hero() {
             <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
           </Button>
           <Button
+            asChild
             size="lg"
             variant="outline"
-            onClick={() => scrollToSection("contact")}
             className="border-border text-foreground hover:bg-secondary px-8 py-6 text-base"
           >
-            Book a Call
+            <Link href="/book">Book a Call</Link>
           </Button>
         </motion.div>
 
